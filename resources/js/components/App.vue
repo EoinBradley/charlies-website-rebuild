@@ -1,9 +1,9 @@
 <script setup>
-
+    import PageFooter from "./PageFooter.vue";
 </script>
 
 <template>
     <div>
-        <h1>Hello world!</h1>
+        <PageFooter />
     </div>
 </template>
