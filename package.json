@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "build": "webpack --config webpack.dev.js",
+    "prod": "webpack --config webpack.prod.js",
+    "watch": "webpack --config webpack.watch.js"
+  },
+  "devDependencies": {
+    "css-loader": "^6.7.3",
+    "css-minimizer-webpack-plugin": "^5.0.0",
+    "mini-css-extract-plugin": "^2.7.5",
+    "raw-loader": "^4.0.2",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2",
+    "vue": "^3.2.47",
+    "vue-loader": "^17.1.0",
+    "vue-template-compiler": "^2.7.14",
+    "webpack": "^5.82.0",
+    "webpack-cli": "^5.0.2",
+    "webpack-merge": "^5.8.0"
+  }
+}
