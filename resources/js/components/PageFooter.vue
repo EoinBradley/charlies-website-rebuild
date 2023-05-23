@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <footer class="w-full ">
+    <footer>
         <div class="w-full text-center">© {{ moment().format('YYYY') }}: All rights reserved</div>
     </footer>
 </template>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Handlers\AppHandler;
+use App\Http\Handlers\GetOpeningHoursHandler;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Illuminate\Container\Container;
@@ -13,9 +14,11 @@ use function FastRoute\simpleDispatcher;
 /** @return RequestHandlerInterface[]|MiddlewareInterface[] */
 return function (Container $container, ServerRequestInterface &$request): array {
     $dispatcher = simpleDispatcher(function (RouteCollector $r) {
-        // $r->addRoute('GET', '[/]', [
-        //     AppHandler::class
-        // ]);
+        $r->addGroup('/api', function (RouteCollector $r) {
+            $r->addRoute('GET', '/opening-hours[/]', [
+                GetOpeningHoursHandler::class,
+            ]);
+        });
     });
 
     $routeInfo = $dispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
