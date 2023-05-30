@@ -62,24 +62,24 @@
 
 <template>
     <nav class="fixed w-full bg-black z-10">
-        <div class="mx-auto w-screen lg:w-[71rem] p-3 flex">
+        <div class="mx-auto w-screen xl:w-[71rem] p-3 flex">
             <router-link to="/">
                 <img src="/images/logo.png" class="w-32 flex-none"  alt="Charlie's bar cork"/>
             </router-link>
-            <div class="text-right flex-auto flex items-center justify-end">
+            <div class="text-right flex-auto hidden md:flex items-center justify-end">
                 <div v-if="$route.fullPath === '/'">
-                    <span class="text-slate-400 hover:text-slate-200 px-8 py-3 cursor-pointer nav-item" data-nav="about-us" @click="scrollToSection">About us</span>
-                    <span class="text-slate-400 hover:text-slate-200 px-8 py-3 cursor-pointer nav-item" data-nav="events" @click="scrollToSection">Event guide</span>
-                    <span class="text-slate-400 hover:text-slate-200 px-8 py-3 cursor-pointer nav-item" data-nav="contact-us" @click="scrollToSection">Contact</span>
-                    <span class="text-slate-400 hover:text-slate-200 px-8 py-3 cursor-pointer nav-item" data-nav="videos" @click="scrollToSection">Videos</span>
+                    <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="about-us" @click="scrollToSection">About us</span>
+                    <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="events" @click="scrollToSection">Event guide</span>
+                    <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="contact-us" @click="scrollToSection">Contact</span>
+                    <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="videos" @click="scrollToSection">Videos</span>
                 </div>
                 <div v-else>
-                    <router-link to="/" class="text-slate-400 hover:text-slate-200 px-8 py-3 cursor-pointer nav-item" role="menuitem">
+                    <router-link to="/" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
                         Home
                     </router-link>
                 </div>
-                <div v-if="authUser" id="dropdown-wrapper" @blur="removeFocusOnDropdown" tabindex="0" class="relative inline-block text-left z-10">
-                    <span class="text-slate-400 hover:text-slate-200 px-8 py-3 cursor-pointer nav-item" @click="dropdownIsOpen = !dropdownIsOpen">Admin</span>
+                <div v-if="authUser && authUser.data.roles.length > 0" id="dropdown-wrapper" @blur="removeFocusOnDropdown" tabindex="0" class="relative inline-block text-left z-10">
+                    <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" @click="dropdownIsOpen = !dropdownIsOpen">Admin</span>
                     <transition
                         enter-active-class="transition ease-out duration-100 transform"
                         enter-from-class="opacity-0 scale-95"
@@ -89,10 +89,10 @@
                         leave-to-class="opacity-0 scale-95">
                         <div id="dropdown" v-show="dropdownIsOpen" @blur="removeFocusOnDropdown" tabindex="0" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y-2 divide-gray-300 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                             <div class="py-1" role="none">
-                                <div class="block px-4 py-2 text-sm text-gray-700" role="menuitem">
+                                <router-link to="/admin/account" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
                                     Signed in as<br />
-                                    <span class="font-bold break-words">Eoin Bradley</span>
-                                </div>
+                                    <span class="font-bold break-words">{{ authUser.data.first_name }} {{ authUser.data.last_name }}</span>
+                                </router-link>
                             </div>
                             <div class="py-1" role="none">
                                 <router-link to="/account" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
@@ -125,6 +125,63 @@
                     </transition>
                 </div>
             </div>
+            <div class="flex flex-auto md:hidden items-center justify-end">
+                <font-awesome-icon class="text-gray-400 px-6 cursor-pointer" @click="dropdownIsOpen = !dropdownIsOpen" :icon="['fas', 'bars']" size="2x" />
+            </div>
         </div>
+            <transition
+                enter-active-class="transition ease-out duration-100 transform"
+                enter-from-class="opacity-0 scale-95"
+                enter-to-class="opacity-100 scale-100"
+                leave-active-class="transition ease-in duration-75 transform"
+                leave-from-class="opacity-100 scale-100"
+                leave-to-class="opacity-0 scale-95">
+                <div id="dropdown" v-show="dropdownIsOpen" class="grid md:hidden w-full text-white divide-y divide-gray-300 overflow-y-scroll max-h-96" tabindex="0" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <div v-if="authUser && authUser.data.roles.length > 0" class="grid py-3" role="none">
+                        <router-link to="/admin/account" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item">
+                            Signed in as<br />
+                            <span class="font-bold break-words">{{ authUser.data.first_name }} {{ authUser.data.last_name }}</span>
+                        </router-link>
+                    </div>
+                    <div class="grid py-3" role="none" v-if="$route.fullPath === '/'">
+                        <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="about-us" @click="scrollToSection">About us</span>
+                        <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="events" @click="scrollToSection">Event guide</span>
+                        <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="contact-us" @click="scrollToSection">Contact</span>
+                        <span class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" data-nav="videos" @click="scrollToSection">Videos</span>
+                    </div>
+                    <div class="grid py-3" role="none" v-else>
+                        <router-link to="/" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
+                            Home
+                        </router-link>
+                    </div>
+                    <div v-if="authUser && authUser.data.roles.length > 0" class="grid py-3" role="none">
+                        <router-link to="/account" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
+                            Manage users
+                        </router-link>
+                        <router-link to="/account" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
+                            Manage user groups
+                        </router-link>
+                    </div>
+                    <div v-if="authUser && authUser.data.roles.length > 0" class="grid py-3" role="none">
+                        <router-link to="/account" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
+                            Manage events
+                        </router-link>
+                        <router-link to="/account" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
+                            Manage artists
+                        </router-link>
+                    </div>
+                    <div v-if="authUser && authUser.data.roles.length > 0" class="grid py-3" role="none">
+                        <router-link to="/account" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
+                            Place orders
+                        </router-link>
+                        <router-link to="/account" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item" role="menuitem">
+                            Manage orders
+                        </router-link>
+                    </div>
+                    <div v-if="authUser && authUser.data.roles.length > 0" class="grid py-3" role="none">
+                        <button @click="logout" class="text-slate-400 hover:text-slate-200 px-6 py-3 cursor-pointer nav-item w-full text-left" role="menuitem">Logout</button>
+                    </div>
+                </div>
+            </transition>
     </nav>
 </template>

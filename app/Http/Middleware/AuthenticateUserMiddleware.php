@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Users\User;
+use App\Repositories\PermissionsRepository;
 use App\Repositories\UserRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,8 +14,11 @@ class AuthenticateUserMiddleware implements MiddlewareInterface
 {
     public const AUTHENTICATED_USER = 'authenticated-user';
 
+    public const USER_ROLES = 'user-roles';
+
     public function __construct(
-        private readonly UserRepository $userRepository
+        private readonly UserRepository $userRepository,
+        private readonly PermissionsRepository $permissionsRepository
     ) {
     }
 
@@ -26,6 +30,7 @@ class AuthenticateUserMiddleware implements MiddlewareInterface
             if ($user instanceof User) {
                 return $handler->handle(
                     $request->withAttribute(self::AUTHENTICATED_USER, $user)
+                        ->withAttribute(self::USER_ROLES, $this->permissionsRepository->getRolesForUser($user))
                 );
             }
 

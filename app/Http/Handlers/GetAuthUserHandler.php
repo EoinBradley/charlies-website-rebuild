@@ -3,6 +3,7 @@
 namespace App\Http\Handlers;
 
 use App\Http\Middleware\AuthenticateUserMiddleware;
+use App\Models\Permissions\Roles;
 use App\Models\Users\User;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -20,6 +21,9 @@ class GetAuthUserHandler implements RequestHandlerInterface
             return new EmptyResponse(401);
         }
 
+        /** @var Roles $roles */
+        $roles = $request->getAttribute(AuthenticateUserMiddleware::USER_ROLES);
+
         return new JsonResponse([
             'data' => [
                 'id' => $user->id,
@@ -27,6 +31,7 @@ class GetAuthUserHandler implements RequestHandlerInterface
                 'email' => $user->email,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
+                'roles' => $roles->pluck('name'),
             ],
         ]);
     }
