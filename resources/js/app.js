@@ -5,6 +5,10 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faSquareFacebook } from '@fortawesome/free-brands-svg-icons';
 import router from "./router";
+import store from "./store";
+import axios from 'axios';
+
+window.axios = axios;
 
 const app = createApp(App);
 
@@ -18,6 +22,8 @@ window.onresize = windowResize;
 windowResize();
 
 app.use(router);
+
+app.use(store);
 
 library.add(fas, faSquareFacebook)
 

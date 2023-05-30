@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Handlers\AppHandler;
+use App\Http\Handlers\GetAuthUserHandler;
 use App\Http\Handlers\GetOpeningHoursHandler;
+use App\Http\Handlers\LoginHandler;
+use App\Http\Handlers\LogoutHandler;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Illuminate\Container\Container;
@@ -15,6 +18,18 @@ use function FastRoute\simpleDispatcher;
 return function (Container $container, ServerRequestInterface &$request): array {
     $dispatcher = simpleDispatcher(function (RouteCollector $r) {
         $r->addGroup('/api', function (RouteCollector $r) {
+            $r->addRoute('GET', '/auth-user[/]', [
+                GetAuthUserHandler::class,
+            ]);
+
+            $r->addRoute('POST', '/login[/]', [
+                LoginHandler::class
+            ]);
+
+            $r->addRoute('POST', '/logout[/]', [
+                LogoutHandler::class
+            ]);
+
             $r->addRoute('GET', '/opening-hours[/]', [
                 GetOpeningHoursHandler::class,
             ]);

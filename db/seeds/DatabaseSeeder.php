@@ -1,4 +1,5 @@
 <?php
+
 use Carbon\Carbon;
 use Phinx\Seed\AbstractSeed;
 
