@@ -5,7 +5,6 @@ namespace App\Http\Handlers;
 use App\Http\Middleware\AuthenticateUserMiddleware;
 use App\Models\Permissions\Roles;
 use App\Models\Users\User;
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,11 +14,8 @@ class GetAuthUserHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var User $user */
         $user = $request->getAttribute(AuthenticateUserMiddleware::AUTHENTICATED_USER);
-
-        if ($user instanceof User === false) {
-            return new EmptyResponse(401);
-        }
 
         /** @var Roles $roles */
         $roles = $request->getAttribute(AuthenticateUserMiddleware::USER_ROLES);

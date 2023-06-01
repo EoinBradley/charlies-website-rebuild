@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\SiteConfigs\Config;
 use App\Models\SiteConfigs\Exceptions\ConfigNotFound;
+use App\Models\Users\User;
 use PDO;
 
 class SiteConfigRepository
@@ -43,5 +44,22 @@ class SiteConfigRepository
     public function getHomepageDescriptionConfig(): Config
     {
         return $this->getConfigByName(self::HOMEPAGE_DESCRIPTION);
+    }
+
+    public function saveConfig(Config $config, User $user): void
+    {
+        $stmt = $this->db->prepare("
+            UPDATE configs
+            SET value = :value,
+                updated_at = NOW(),
+                actor_id = :actorId
+            WHERE id = :id
+        ");
+
+        $stmt->execute([
+            'value' => $config->value,
+            'actorId' => $user->id,
+            'id' => $config->id,
+        ]);
     }
 }

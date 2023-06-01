@@ -10,9 +10,10 @@
     let passwordError = ref(null);
 
     function login() {
-        let data = new FormData();
-        data.append('email', email.value);
-        data.append('password', password.value);
+        let data = {
+            email: email.value,
+            password: password.value,
+        };
 
         password.value = null;
 

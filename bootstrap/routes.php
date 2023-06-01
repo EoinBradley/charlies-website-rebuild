@@ -2,9 +2,12 @@
 
 use App\Http\Handlers\AppHandler;
 use App\Http\Handlers\GetAuthUserHandler;
+use App\Http\Handlers\GetHomepageDescriptionHandler;
 use App\Http\Handlers\GetOpeningHoursHandler;
 use App\Http\Handlers\LoginHandler;
 use App\Http\Handlers\LogoutHandler;
+use App\Http\Handlers\UpdateHomepageDescriptionHandler;
+use App\Http\Middleware\RequiresAuthenticationMiddleware;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Illuminate\Container\Container;
@@ -19,6 +22,7 @@ return function (Container $container, ServerRequestInterface &$request): array 
     $dispatcher = simpleDispatcher(function (RouteCollector $r) {
         $r->addGroup('/api', function (RouteCollector $r) {
             $r->addRoute('GET', '/auth-user[/]', [
+                RequiresAuthenticationMiddleware::class,
                 GetAuthUserHandler::class,
             ]);
 
@@ -32,6 +36,16 @@ return function (Container $container, ServerRequestInterface &$request): array 
 
             $r->addRoute('GET', '/opening-hours[/]', [
                 GetOpeningHoursHandler::class,
+            ]);
+
+            $r->addRoute('GET', '/homepage-description[/]', [
+                RequiresAuthenticationMiddleware::class,
+                GetHomepageDescriptionHandler::class,
+            ]);
+
+            $r->addRoute('PUT', '/homepage-description[/]', [
+                RequiresAuthenticationMiddleware::class,
+                UpdateHomepageDescriptionHandler::class,
             ]);
         });
     });

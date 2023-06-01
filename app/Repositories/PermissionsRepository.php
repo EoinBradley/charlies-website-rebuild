@@ -9,9 +9,8 @@ use PDO;
 
 class PermissionsRepository
 {
-    public function __construct(
-        private readonly PDO $db
-    ) {
+    public function __construct(private readonly PDO $db)
+    {
     }
 
     public function getRolesForUser(User $user): Roles

@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import Home from "./views/Home.vue";
 import Admin from "./views/admin/Index.vue";
 import ManageAccount from "./views/admin/ManageAccount.vue";
+import UpdateHomepageDescription from "./views/admin/UpdateHomepageDescription.vue";
 
 let router = createRouter({
     history: createWebHistory(),
@@ -17,6 +18,10 @@ let router = createRouter({
                 },
                 {
                     path: 'account', component: ManageAccount,
+                },
+                {
+                    path: 'update-homepage-description', component: UpdateHomepageDescription,
+                    meta: {permission: 'Update homepage description'}
                 },
             ],
         },

@@ -7,9 +7,8 @@ use SessionHandlerInterface;
 
 class SessionHandler implements SessionHandlerInterface
 {
-    public function __construct(
-        private readonly PDO $db
-    ) {
+    public function __construct(private readonly PDO $db)
+    {
     }
 
     public function close(): bool

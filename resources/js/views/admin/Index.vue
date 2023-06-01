@@ -2,6 +2,7 @@
     import Login from "./Login.vue";
     import {useStore} from "vuex";
     import {computed} from "vue";
+    import InsufficientPermissions from "../../components/InsufficientPermissions.vue";
 
     const store = useStore();
 
@@ -13,8 +14,9 @@
     <div>
         <div class="mx-auto w-screen xl:w-[71rem] px-3 py-20 grid">
             <div v-if="authUserStatus !== null && authUserStatus !== 'loading'">
-                <router-view v-if="authUser !== null" :key="$route.fullPath" />
-                <Login v-else />
+                <Login v-if="authUser === null" />
+                <InsufficientPermissions v-else-if="'permission' in $route.meta && authUser.data.roles.includes($route.meta.permission) === false" />
+                <router-view v-else :key="$route.fullPath" />
             </div>
         </div>
     </div>
