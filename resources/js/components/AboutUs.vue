@@ -7,7 +7,7 @@
     let openingHours = ref([]);
 
     onMounted(() => {
-        axios.get('/api/opening-hours')
+        axios.get('/api/opening-hours-for-week')
             .then(({data}) => {
                 openingHours.value = data.data;
                 loadingOpeningHours.value = false;
@@ -29,10 +29,10 @@
                 </div>
                 <ul v-else>
                     <li v-for="day in openingHours" class="flex py-2">
-                        <div class="w-32">{{ day.day }}</div>
+                        <div class="w-32">{{ day.data.attributes.day }}</div>
                         <div>
-                            <span v-if="day.openAt === null || day.closeAt === null">Closed</span>
-                            <span v-else>{{ day.openAt }} - {{ day.closeAt }}</span>
+                            <span v-if="day.data.attributes.open_at === null || day.data.attributes.clos_at === null">Closed</span>
+                            <span v-else>{{ day.data.attributes.open_at }} - {{ day.data.attributes.close_at }}</span>
                         </div>
                     </li>
                 </ul>

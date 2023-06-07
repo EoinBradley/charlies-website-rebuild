@@ -14,4 +14,16 @@ class OpeningTime
         public readonly ?string $exceptionDescription = null
     ) {
     }
+
+    public function isEqual(OpeningTime $day): bool
+    {
+        return $this->openedAt?->format('H:i') === $day->openedAt?->format('H:i')
+            && $this->closedAt?->format('H:i') === $day->closedAt?->format('H:i')
+            && $this->date->dayOfWeek === $day->date->dayOfWeek;
+    }
+
+    public function isNotEqual(OpeningTime $day): bool
+    {
+        return !$this->isEqual($day);
+    }
 }

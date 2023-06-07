@@ -18,7 +18,7 @@
                     Name
                 </div>
                 <div class="grow text-lg">
-                    {{ authUser.data.first_name }} {{ authUser.data.last_name }}
+                    {{ authUser.data.attributes.first_name }} {{ authUser.data.attributes.last_name }}
                 </div>
             </div>
             <div class="sm:flex py-3">
@@ -26,7 +26,7 @@
                     Email *
                 </div>
                 <div class="grow">
-                    <input type="email" v-model="authUser.data.email" placeholder="Email" class="rounded-md border border-gray-500 px-4 h-8 focus:outline-none w-full text-black cursor-not-allowed" disabled />
+                    <input type="email" v-model="authUser.data.attributes.email" placeholder="Email" class="rounded-md border border-gray-500 px-4 h-8 focus:outline-none w-full text-black cursor-not-allowed" disabled />
                     <div v-if="emailError" class="text-red-600 font-bold px-4 pt-2">{{ emailError }}</div>
                 </div>
             </div>

@@ -15,7 +15,7 @@
         <div class="mx-auto w-screen xl:w-[71rem] px-3 py-20 grid">
             <div v-if="authUserStatus !== null && authUserStatus !== 'loading'">
                 <Login v-if="authUser === null" />
-                <InsufficientPermissions v-else-if="'permission' in $route.meta && authUser.data.roles.includes($route.meta.permission) === false" />
+                <InsufficientPermissions v-else-if="'permission' in $route.meta && authUser.data.attributes.roles.includes($route.meta.permission) === false" />
                 <router-view v-else :key="$route.fullPath" />
             </div>
         </div>

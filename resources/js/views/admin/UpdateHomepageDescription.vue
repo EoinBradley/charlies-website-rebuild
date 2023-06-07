@@ -25,6 +25,11 @@
             description: homepageDescription.value.value
         }).then(() => {
             updateComplete.value = true;
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+            });
         }).catch(error => {
             if (error.response.status === 422) {
                 homepageDescriptionError.value = error.response.data.errors.hasOwnProperty('description')

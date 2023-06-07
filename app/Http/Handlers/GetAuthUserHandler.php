@@ -23,11 +23,14 @@ class GetAuthUserHandler implements RequestHandlerInterface
         return new JsonResponse([
             'data' => [
                 'id' => $user->id,
-                'username' => $user->username,
-                'email' => $user->email,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'roles' => $roles->pluck('name'),
+                'type' => 'user',
+                'attributes' => [
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'roles' => $roles->pluck('name'),
+                ],
             ],
         ]);
     }

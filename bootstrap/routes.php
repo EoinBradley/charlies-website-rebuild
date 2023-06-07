@@ -3,10 +3,12 @@
 use App\Http\Handlers\AppHandler;
 use App\Http\Handlers\GetAuthUserHandler;
 use App\Http\Handlers\GetHomepageDescriptionHandler;
+use App\Http\Handlers\GetOpeningHoursForWeekHandler;
 use App\Http\Handlers\GetOpeningHoursHandler;
 use App\Http\Handlers\LoginHandler;
 use App\Http\Handlers\LogoutHandler;
 use App\Http\Handlers\UpdateHomepageDescriptionHandler;
+use App\Http\Handlers\UpdateOpeningHoursHandler;
 use App\Http\Middleware\RequiresAuthenticationMiddleware;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
@@ -34,8 +36,8 @@ return function (Container $container, ServerRequestInterface &$request): array 
                 LogoutHandler::class
             ]);
 
-            $r->addRoute('GET', '/opening-hours[/]', [
-                GetOpeningHoursHandler::class,
+            $r->addRoute('GET', '/opening-hours-for-week[/]', [
+                GetOpeningHoursForWeekHandler::class,
             ]);
 
             $r->addRoute('GET', '/homepage-description[/]', [
@@ -46,6 +48,16 @@ return function (Container $container, ServerRequestInterface &$request): array 
             $r->addRoute('PUT', '/homepage-description[/]', [
                 RequiresAuthenticationMiddleware::class,
                 UpdateHomepageDescriptionHandler::class,
+            ]);
+
+            $r->addRoute('GET', '/opening-hours[/]', [
+                RequiresAuthenticationMiddleware::class,
+                GetOpeningHoursHandler::class
+            ]);
+
+            $r->addRoute('PUT', '/opening-hours[/]', [
+                RequiresAuthenticationMiddleware::class,
+                UpdateOpeningHoursHandler::class
             ]);
         });
     });

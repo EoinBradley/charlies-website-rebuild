@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class GetOpeningHoursHandler implements RequestHandlerInterface
+class GetOpeningHoursForWeekHandler implements RequestHandlerInterface
 {
     public function __construct(private readonly OpeningHoursRepository $openingHoursRepository)
     {
@@ -20,7 +20,7 @@ class GetOpeningHoursHandler implements RequestHandlerInterface
         return new JsonResponse([
             'data' => $this
                 ->openingHoursRepository
-                ->getOpeningHours()
+                ->getOpeningHoursForWeek()
                 ->map(function (OpeningTime $openingTime) {
                     return [
                         'data' => [
@@ -28,8 +28,10 @@ class GetOpeningHoursHandler implements RequestHandlerInterface
                             'type' => 'opening-hours',
                             'attributes' => [
                                 'day' => $openingTime->date->dayName,
-                                'open_at' => $openingTime->openedAt?->format('H:i'),
-                                'close_at' => $openingTime->closedAt?->format('H:i'),
+                                'open_at' => $openingTime->openedAt?->format('h:ia'),
+                                'close_at' => $openingTime->closedAt?->format('h:ia'),
+                                'is_exception' => $openingTime->isException,
+                                'exception_description' => $openingTime->exceptionDescription,
                             ],
                         ],
                     ];

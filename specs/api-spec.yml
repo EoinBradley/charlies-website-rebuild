@@ -1,0 +1,260 @@
+openapi: 3.0.0
+info:
+  title: Charlies Bar Cork
+  description: Charlies Bar Cork
+  version: 1.0.0
+servers:
+  - url: 'https://charliesbarcork.com/'
+paths:
+  /api/auth-user:
+    get:
+      summary: Get authenticated user
+      tags:
+        - 'User'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+  /api/login:
+    post:
+      summary: Login
+      tags:
+        - 'User'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  required: true
+                password:
+                  type: string
+                  required: true
+      responses:
+        204:
+          $ref: '#/components/responses/Empty'
+  /api/logout:
+    post:
+      summary: Logout
+      tags:
+        - 'User'
+      responses:
+        204:
+          $ref: '#/components/responses/Empty'
+  /api/opening-hours:
+    get:
+      summary: Get opening hours
+      tags:
+        - 'Opening hours'
+      responses:
+        200:
+          description: Opening hours
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OpeningHours'
+                    minimum: 7
+                    maximum: 7
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+    put:
+      summary: Update opening hours
+      tags:
+        - 'Opening hours'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                days:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      day:
+                        type: string
+                        example: 'Monday'
+                      open_at:
+                        type: string
+                        example: '14:00'
+                      close_at:
+                        type: string
+                        example: '23:30'
+                  maximum: 7
+                  minimum: 7
+      responses:
+        204:
+          $ref: '#/components/responses/Empty'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        422:
+          $ref: '#/components/responses/BadRequest'
+  /api/opening-hours-for-week:
+    get:
+      tags:
+        - 'Opening hours'
+      summary: Get opening hours for current week
+      responses:
+        200:
+          description: Opening hours
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OpeningHours'
+                    minimum: 7
+                    maximum: 7
+  /api/homepage-description:
+    get:
+      summary: Get homepage description
+      tags:
+        - 'Homepage description'
+      responses:
+        200:
+          description: Homepage description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+    put:
+      summary: Update homepage description
+      tags:
+        - 'Homepage description'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+      responses:
+        204:
+          $ref: '#/components/responses/Empty'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        422:
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            type:
+              type: string
+            attributes:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                roles:
+                  anyOf:
+                    - $ref: '#/components/schemas/Role'
+      example:
+        data:
+          id: 10
+          type: user
+          attributes:
+            username: 'Test User'
+            email: 'test@example.com'
+            first_name: 'Test'
+            last_name: 'User'
+            roles:
+              - 'Manage account'
+    Role:
+      type: string
+      example:
+        'Manage account'
+    OpeningHours:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            attributes:
+              type: object
+              properties:
+                day:
+                  type: string
+                open_at:
+                  type: string
+                close_at:
+                  type: string
+                is_exception:
+                  type: boolean
+                exception_description:
+                  type: string
+      example:
+        data:
+          id: 'Monday'
+          type: 'opening-hours'
+          attributes:
+            day: 'Monday'
+            open_at: '02:00pm'
+            close_at: '11:30pm'
+            is_exception: false
+            exception_description: null
+  responses:
+    Unauthenticated:
+      description: User not authorized
+      content:
+        application/json:
+          schema:
+            type: object
+    Empty:
+      description: Empty response
+      content:
+        application/json:
+          schema:
+            type: object
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+          example:
+            errors: []
