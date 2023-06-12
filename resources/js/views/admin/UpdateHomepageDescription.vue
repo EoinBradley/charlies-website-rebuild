@@ -1,11 +1,11 @@
 <script setup>
     import {onMounted, ref} from "vue";
     import axios from "axios";
+    import {useToast} from "vue-toast-notification";
 
     let loadingHomepageDescription = ref(true);
     let homepageDescription = ref('');
     let homepageDescriptionError = ref(null);
-    let updateComplete = ref(false);
 
     onMounted(() => {
         axios.get('/api/homepage-description')
@@ -19,12 +19,14 @@
     });
 
     function updateDescription() {
-        updateComplete.value = false;
-
         axios.put('/api/homepage-description', {
             description: homepageDescription.value.value
         }).then(() => {
-            updateComplete.value = true;
+            useToast().success('Successfully updated', {
+                position: 'top-right',
+                duration: 4000
+            });
+
             window.scrollTo({
                 top: 0,
                 left: 0,
@@ -49,9 +51,6 @@
             <font-awesome-icon :icon="['fas', 'spinner']" size="3x" spin />
         </div>
         <div v-else class="w-full py-4">
-            <div v-if="updateComplete" class="py-3 font-bold text-xl">
-                Update successful
-            </div>
             <div class="py-3">
                 <textarea v-model="homepageDescription.value" class="rounded-md border border-gray-500 focus:outline-none w-full h-56 p-4 text-black"></textarea>
                 <div v-if="homepageDescriptionError" class="text-red-600 font-bold px-4 pt-2">{{ homepageDescriptionError }}</div>

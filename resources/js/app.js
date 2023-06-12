@@ -7,6 +7,8 @@ import { faSquareFacebook } from '@fortawesome/free-brands-svg-icons';
 import router from "./router";
 import store from "./store";
 import axios from 'axios';
+import ToastPlugin from "vue-toast-notification";
+import 'vue-toast-notification/dist/theme-sugar.css'
 
 window.axios = axios;
 
@@ -24,6 +26,8 @@ windowResize();
 app.use(router);
 
 app.use(store);
+
+app.use(ToastPlugin);
 
 library.add(fas, faSquareFacebook)
 

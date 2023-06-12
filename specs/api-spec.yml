@@ -160,6 +160,42 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         422:
           $ref: '#/components/responses/BadRequest'
+  /api/artists:
+    get:
+      summary: Get artists
+      tags:
+        - Events
+      responses:
+        200:
+          description: Artists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Artist'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+  /api/artists/{artistId}:
+    put:
+      summary: Update artist
+      tags:
+        - Events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artist'
+      responses:
+        204:
+          $ref: '#/components/responses/Empty'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        422:
+          $ref: '#/components/responses/BadRequest'
 components:
   schemas:
     User:
@@ -234,6 +270,25 @@ components:
             close_at: '11:30pm'
             is_exception: false
             exception_description: null
+    Artist:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 10
+            type:
+              type: string
+              example: 'artist'
+            attributes:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
   responses:
     Unauthenticated:
       description: User not authorized

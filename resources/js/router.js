@@ -4,6 +4,7 @@ import Admin from "./views/admin/Index.vue";
 import ManageAccount from "./views/admin/ManageAccount.vue";
 import UpdateHomepageDescription from "./views/admin/UpdateHomepageDescription.vue";
 import UpdateOpeningHours from "./views/admin/UpdateOpeningHours.vue";
+import ManageArtists from "./views/admin/ManageArtists.vue";
 
 let router = createRouter({
     history: createWebHistory(),
@@ -27,6 +28,10 @@ let router = createRouter({
                 {
                     path: 'update-opening-hours', component: UpdateOpeningHours,
                     meta: {permission: 'Update opening hours'}
+                },
+                {
+                    path: 'manage-artists', component: ManageArtists,
+                    meta: {permission: 'Manage artists'}
                 }
             ],
         },

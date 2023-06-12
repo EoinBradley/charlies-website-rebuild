@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Handlers\AppHandler;
+use App\Http\Handlers\Events\ListArtistsHandler;
+use App\Http\Handlers\Events\UpdateArtistHandler;
 use App\Http\Handlers\GetAuthUserHandler;
 use App\Http\Handlers\GetHomepageDescriptionHandler;
 use App\Http\Handlers\GetOpeningHoursForWeekHandler;
@@ -58,6 +60,16 @@ return function (Container $container, ServerRequestInterface &$request): array 
             $r->addRoute('PUT', '/opening-hours[/]', [
                 RequiresAuthenticationMiddleware::class,
                 UpdateOpeningHoursHandler::class
+            ]);
+
+            $r->addRoute('GET', '/artists[/]', [
+                RequiresAuthenticationMiddleware::class,
+                ListArtistsHandler::class
+            ]);
+
+            $r->addRoute('PUT', '/artists/{artistId:\d+}[/]', [
+                RequiresAuthenticationMiddleware::class,
+                UpdateArtistHandler::class
             ]);
         });
     });

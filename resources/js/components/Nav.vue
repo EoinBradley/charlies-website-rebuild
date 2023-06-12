@@ -109,7 +109,7 @@
                         leave-active-class="transition ease-in duration-75 transform"
                         leave-from-class="opacity-100 scale-100"
                         leave-to-class="opacity-0 scale-95">
-                        <div id="dropdown" v-show="dropdownIsOpen" @blur="removeFocusOnDropdown" tabindex="0" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y-2 divide-gray-300 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                        <div id="dropdown" v-show="dropdownIsOpen" @blur="removeFocusOnDropdown" tabindex="0" class="origin-top-right absolute right-0 mt-2 w-60 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y-2 divide-gray-300 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                             <div class="py-1" role="none">
                                 <router-link to="/admin/account" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
                                     Signed in as<br />
@@ -124,6 +124,11 @@
                             <div v-if="authUser && authUser.data.attributes.roles.includes('Update opening hours')" class="py-1" role="none">
                                 <router-link to="/admin/update-opening-hours" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">
                                     Update opening hours
+                                </router-link>
+                            </div>
+                            <div v-if="authUser && authUser.data.attributes.roles.includes('Manage artists')" class="py-1" role="none">
+                                <router-link to="/admin/manage-artists" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">
+                                    Manage artists
                                 </router-link>
                             </div>
                             <div class="py-1" role="none">
@@ -165,6 +170,11 @@
                 <div v-if="authUser && authUser.data.attributes.roles.includes('Update homepage description')" class="grid py-3" role="none">
                     <router-link to="/admin/update-homepage-description" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-50 px-6 py-3 cursor-pointer nav-item" active-class="text-slate-50" role="menuitem">
                         Update homepage description
+                    </router-link>
+                </div>
+                <div v-if="authUser && authUser.data.attributes.roles.includes('Manage artists')" class="grid py-3" role="none">
+                    <router-link to="/admin/manage-artists" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-50 px-6 py-3 cursor-pointer nav-item" active-class="text-slate-50" role="menuitem">
+                        Manage artists
                     </router-link>
                 </div>
                 <div v-if="authUser && authUser.data.attributes.roles.includes('Update opening hours')" class="grid py-3" role="none">
