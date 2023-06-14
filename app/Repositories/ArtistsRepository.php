@@ -19,6 +19,7 @@ class ArtistsRepository
         $stmt = $this->db->query("
             SELECT * FROM artists
             WHERE deleted_at IS NULL
+            ORDER BY name ASC
         ");
 
         return collect($stmt->fetchAll(PDO::FETCH_OBJ))->map(function (object $data) {
@@ -52,8 +53,25 @@ class ArtistsRepository
         );
     }
 
-    public function saveArtist(Artist $artist, User $user): void
+    public function saveArtist(Artist $artist, User $user): Artist
     {
+        if ($artist->id === null) {
+            $stmt = $this->db->prepare("
+                INSERT INTO artists (name, description, created_at, actor_id)
+                VALUE (:name, :description, NOW(), :actorId);
+            ");
+
+            $stmt->execute([
+                'name' => $artist->name,
+                'description' => $artist->description,
+                'actorId' => $user->id,
+            ]);
+
+            $artist->id = (int) $this->db->lastInsertId();
+
+            return $artist;
+        }
+
         $stmt = $this->db->prepare("
             UPDATE artists
             SET name = :name,
@@ -69,5 +87,7 @@ class ArtistsRepository
             'actorId' => $user->id,
             'id' => $artist->id,
         ]);
+
+        return $artist;
     }
 }

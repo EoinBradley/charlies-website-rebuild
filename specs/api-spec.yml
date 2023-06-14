@@ -179,6 +179,26 @@ paths:
                       $ref: '#/components/schemas/Artist'
         401:
           $ref: '#/components/responses/Unauthenticated'
+    post:
+      summary: Create artist
+      tags:
+        - Events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artist'
+      responses:
+        200:
+          description: Artist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artist'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        422:
+          $ref: '#/components/responses/BadRequest'
   /api/artists/{artistId}:
     put:
       summary: Update artist

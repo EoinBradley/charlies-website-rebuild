@@ -2,6 +2,7 @@
     import {onMounted, ref} from "vue";
     import axios from "axios";
     import ArtistRow from "../../components/admin/ArtistRow.vue";
+    import CreateArtist from "../../components/admin/CreateArtist.vue";
 
     let loadingArtists = ref(true);
     let artists = ref([]);
@@ -16,6 +17,13 @@
                 console.error('Unable to get artists')
             });
     });
+
+    function addArtist(artist) {
+        artists.value = [
+            artist,
+            ...artists.value
+        ]
+    }
 </script>
 
 <template>
@@ -25,6 +33,7 @@
             <font-awesome-icon :icon="['fas', 'spinner']" size="3x" spin />
         </div>
         <div v-else class="w-full py-4">
+            <CreateArtist class="w-full" @artist-created="addArtist" />
             <ArtistRow v-for="(artist, key) in artists" :key="artist.data.id" :artist="artist" class="w-full" />
         </div>
     </div>

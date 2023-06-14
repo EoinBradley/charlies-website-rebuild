@@ -5,7 +5,7 @@ namespace App\Models\Artists;
 class Artist
 {
     public function __construct(
-        public readonly int $id,
+        public ?int $id,
         public readonly string $name,
         public readonly string $description
     ) {

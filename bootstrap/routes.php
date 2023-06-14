@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Handlers\AppHandler;
+use App\Http\Handlers\Events\CreateArtistHandler;
 use App\Http\Handlers\Events\ListArtistsHandler;
 use App\Http\Handlers\Events\UpdateArtistHandler;
 use App\Http\Handlers\GetAuthUserHandler;
@@ -65,6 +66,11 @@ return function (Container $container, ServerRequestInterface &$request): array 
             $r->addRoute('GET', '/artists[/]', [
                 RequiresAuthenticationMiddleware::class,
                 ListArtistsHandler::class
+            ]);
+
+            $r->addRoute('POST', '/artists[/]', [
+                RequiresAuthenticationMiddleware::class,
+                CreateArtistHandler::class
             ]);
 
             $r->addRoute('PUT', '/artists/{artistId:\d+}[/]', [
