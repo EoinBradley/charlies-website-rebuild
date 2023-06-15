@@ -3,11 +3,13 @@
     import Nav from "./Nav.vue";
     import {onMounted} from "vue";
     import {useStore} from "vuex";
+    import CookieConsentBanner from "./CookieConsentBanner.vue";
 
     const store = useStore();
 
     onMounted(() => {
         store.dispatch('fetchAuthUser');
+        store.dispatch('fetchConsentCookie');
     });
 </script>
 
@@ -16,5 +18,6 @@
         <Nav />
         <router-view :key="$route.fullPath"></router-view>
         <PageFooter />
+        <CookieConsentBanner />
     </div>
 </template>
