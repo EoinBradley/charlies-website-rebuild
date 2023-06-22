@@ -9,6 +9,9 @@ import store from "./store";
 import axios from 'axios';
 import ToastPlugin from "vue-toast-notification";
 import 'vue-toast-notification/dist/theme-sugar.css'
+import vSelect from "vue-select"
+import "vue-select/dist/vue-select.css";
+import Datepicker from 'vue3-datepicker';
 
 window.axios = axios;
 
@@ -32,5 +35,9 @@ app.use(ToastPlugin);
 library.add(fas, faSquareFacebook)
 
 app.component('font-awesome-icon', FontAwesomeIcon);
+
+app.component('v-select', vSelect);
+
+app.component('Datepicker', Datepicker);
 
 app.mount('#app');

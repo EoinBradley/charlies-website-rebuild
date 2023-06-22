@@ -10,6 +10,8 @@ class Role
 
     public const MANAGE_ARTISTS_ROLE = 'Manage artists';
 
+    public const MANAGE_EVENTS_ROLE = 'Manage events';
+
     public function __construct(
         public readonly int $id,
         public readonly string $name

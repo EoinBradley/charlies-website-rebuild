@@ -216,6 +216,43 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         422:
           $ref: '#/components/responses/BadRequest'
+  /api/upcoming-events:
+    get:
+      summary: Get upcoming events
+      tags:
+        - Events
+      responses:
+        200:
+          description: Events
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+  /api/events:
+    post:
+      summary: Create event
+      tags:
+        - Events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        200:
+          description: Event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        422:
+          $ref: '#/components/responses/BadRequest'
 components:
   schemas:
     User:
@@ -309,6 +346,26 @@ components:
                   type: string
                 description:
                   type: string
+    Event:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 10
+            type:
+              type: string
+              example: 'event'
+            attributes:
+              type: object
+              properties:
+                start_at:
+                  type: string
+                  example: '1970-01-01 00:00:00'
+                artist:
+                  $ref: '#/components/schemas/Artist'
   responses:
     Unauthenticated:
       description: User not authorized

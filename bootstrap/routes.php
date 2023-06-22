@@ -2,7 +2,9 @@
 
 use App\Http\Handlers\AppHandler;
 use App\Http\Handlers\Events\CreateArtistHandler;
+use App\Http\Handlers\Events\CreateUpcomingEventsHandler;
 use App\Http\Handlers\Events\ListArtistsHandler;
+use App\Http\Handlers\Events\ListUpcomingEventsHandler;
 use App\Http\Handlers\Events\UpdateArtistHandler;
 use App\Http\Handlers\GetAuthUserHandler;
 use App\Http\Handlers\GetHomepageDescriptionHandler;
@@ -76,6 +78,15 @@ return function (Container $container, ServerRequestInterface &$request): array 
             $r->addRoute('PUT', '/artists/{artistId:\d+}[/]', [
                 RequiresAuthenticationMiddleware::class,
                 UpdateArtistHandler::class
+            ]);
+
+            $r->addRoute('GET', '/upcoming-events[/]', [
+                ListUpcomingEventsHandler::class
+            ]);
+
+            $r->addRoute('POST', '/events[/]', [
+                RequiresAuthenticationMiddleware::class,
+                CreateUpcomingEventsHandler::class
             ]);
         });
     });

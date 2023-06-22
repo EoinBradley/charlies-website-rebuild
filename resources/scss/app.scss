@@ -30,3 +30,48 @@ p {
   background-color: white;
   box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
+
+.vs__search,
+.vs__search:focus,
+.vs__selected {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.vs__selected-options {
+  padding: 0;
+}
+
+.vs__search::placeholder {
+  color: rgb(148 163 184);
+}
+
+.v3dp__input_wrapper > input {
+  width: 100%;
+  border: 1px solid rgb(107 114 128);
+  padding-left: 1rem;
+  padding-right: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  outline: none;
+}
+
+.v3dp__input_wrapper {
+  position: relative;
+}
+
+.v3dp__clearable {
+  position: absolute !important;
+  top: 3px;
+  right: 10px;
+  left: unset !important;
+}
+
+:root {
+  --vs-border-color: rgb(107 114 128);
+  --vs-border-radius: 0.375rem;
+  --vdp-hover-bg-color: rgb(29, 78, 216);
+  --vdp-selected-bg-color: rgb(29, 78, 216);
+}

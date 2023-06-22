@@ -57,7 +57,7 @@ class CreateArtistHandler implements RequestHandlerInterface
             ]);
 
             return new JsonResponse([
-                'error' => 'Failed to update artist'
+                'error' => 'Failed to create artist'
             ], 500);
         }
 

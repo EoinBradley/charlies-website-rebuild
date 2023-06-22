@@ -126,9 +126,12 @@
                                     Update opening hours
                                 </router-link>
                             </div>
-                            <div v-if="authUser && authUser.data.attributes.roles.includes('Manage artists')" class="py-1" role="none">
-                                <router-link to="/admin/manage-artists" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">
+                            <div v-if="authUser && (authUser.data.attributes.roles.includes('Manage artists') || authUser.data.attributes.roles.includes('Manage events'))" class="py-1" role="none">
+                                <router-link v-if="authUser.data.attributes.roles.includes('Manage artists')" to="/admin/manage-artists" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">
                                     Manage artists
+                                </router-link>
+                                <router-link v-if="authUser.data.attributes.roles.includes('Manage events')" to="/admin/manage-events" v-on:click.native="dropdownIsOpen = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" role="menuitem">
+                                    Manage events
                                 </router-link>
                             </div>
                             <div class="py-1" role="none">
@@ -172,9 +175,12 @@
                         Update homepage description
                     </router-link>
                 </div>
-                <div v-if="authUser && authUser.data.attributes.roles.includes('Manage artists')" class="grid py-3" role="none">
-                    <router-link to="/admin/manage-artists" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-50 px-6 py-3 cursor-pointer nav-item" active-class="text-slate-50" role="menuitem">
+                <div v-if="authUser && (authUser.data.attributes.roles.includes('Manage artists') || authUser.data.attributes.roles.includes('Manage events'))" class="grid py-3" role="none">
+                    <router-link v-if="authUser.data.attributes.roles.includes('Manage artists')" to="/admin/manage-artists" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-50 px-6 py-3 cursor-pointer nav-item" active-class="text-slate-50" role="menuitem">
                         Manage artists
+                    </router-link>
+                    <router-link v-if="authUser.data.attributes.roles.includes('Manage events')" to="/admin/manage-events" v-on:click.native="dropdownIsOpen = false" class="text-slate-400 hover:text-slate-50 px-6 py-3 cursor-pointer nav-item" active-class="text-slate-50" role="menuitem">
+                        Manage events
                     </router-link>
                 </div>
                 <div v-if="authUser && authUser.data.attributes.roles.includes('Update opening hours')" class="grid py-3" role="none">
