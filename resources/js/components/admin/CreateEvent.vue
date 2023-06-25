@@ -6,7 +6,7 @@
 
     let props = defineProps(['artists']);
 
-    let dropdownIsOpen = ref(true);
+    let dropdownIsOpen = ref(false);
     let artist = ref(null);
     let artistError = ref(null);
     let date = ref(null);

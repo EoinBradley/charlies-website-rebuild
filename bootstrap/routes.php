@@ -6,6 +6,7 @@ use App\Http\Handlers\Events\CreateUpcomingEventsHandler;
 use App\Http\Handlers\Events\ListArtistsHandler;
 use App\Http\Handlers\Events\ListUpcomingEventsHandler;
 use App\Http\Handlers\Events\UpdateArtistHandler;
+use App\Http\Handlers\Events\UpdateEventHandler;
 use App\Http\Handlers\GetAuthUserHandler;
 use App\Http\Handlers\GetHomepageDescriptionHandler;
 use App\Http\Handlers\GetOpeningHoursForWeekHandler;
@@ -87,6 +88,11 @@ return function (Container $container, ServerRequestInterface &$request): array 
             $r->addRoute('POST', '/events[/]', [
                 RequiresAuthenticationMiddleware::class,
                 CreateUpcomingEventsHandler::class
+            ]);
+
+            $r->addRoute('PUT', '/events/{eventId:\d+}[/]', [
+                RequiresAuthenticationMiddleware::class,
+                UpdateEventHandler::class
             ]);
         });
     });

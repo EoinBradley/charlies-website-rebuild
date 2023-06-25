@@ -6,6 +6,7 @@ use App\Exceptions\FailedValidation;
 use App\Http\Middleware\AuthenticateUserMiddleware;
 use App\Models\Artists\Exceptions\ArtistNotFound;
 use App\Models\Events\Event;
+use App\Models\Events\Exceptions\EventNotFound;
 use App\Models\Permissions\Role;
 use App\Models\Permissions\Roles;
 use App\Models\Users\User;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use Carbon\Exceptions\Exception as CarbonException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\MessageBag;
+use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use PDO;
 use Psr\Http\Message\ResponseInterface;
@@ -23,11 +25,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class CreateUpcomingEventsHandler implements RequestHandlerInterface
+class UpdateEventHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly ArtistsRepository $artistsRepository,
         private readonly EventsRepository $eventsRepository,
+        private readonly ArtistsRepository $artistsRepository,
         private readonly LoggerInterface $logger,
         private readonly PDO $db
     ) {
@@ -41,7 +43,7 @@ class CreateUpcomingEventsHandler implements RequestHandlerInterface
         /** @var Roles $roles */
         $roles = $request->getAttribute(AuthenticateUserMiddleware::USER_ROLES);
 
-        if ($roles->hasAccessTo(Role::MANAGE_EVENTS_ROLE) === false) {
+        if ($roles->hasAccessTo(Role::MANAGE_ARTISTS_ROLE) === false) {
             return new JsonResponse([
                 'error' => 'Error 403: Forbidden'
             ], 403);
@@ -50,16 +52,24 @@ class CreateUpcomingEventsHandler implements RequestHandlerInterface
         try {
             $this->db->beginTransaction();
 
-            $event = $this->eventsRepository->saveEvent(
-                $this->buildEventFromRequest($request),
-                $user
-            );
+            $currentEvent = $this->eventsRepository->getEventById((int) $request->getAttribute('eventId'));
+            $newEvent = $this->buildEventFromRequest($request);
+
+            if ($newEvent->isNotEqual($currentEvent)) {
+                $this->eventsRepository->saveEvent($newEvent, $user);
+            }
 
             $this->db->commit();
         } catch (FailedValidation $exception) {
+            $this->db->rollBack();
+
             return new JsonResponse([
                 'errors' => $exception->errors->getMessages(),
             ], 400);
+        } catch (EventNotFound) {
+            $this->db->rollBack();
+
+            return new EmptyResponse(404);
         } catch (Throwable $exception) {
             $this->db->rollBack();
             $this->logger->error($exception->getMessage(), [
@@ -68,33 +78,15 @@ class CreateUpcomingEventsHandler implements RequestHandlerInterface
             ]);
 
             return new JsonResponse([
-                'error' => 'Failed to create event'
+                'error' => 'Failed to update artist'
             ], 500);
         }
 
-        return new JsonResponse([
-            'data' => [
-                'id' => $event->id,
-                'type' => 'event',
-                'attributes' => [
-                    'start_at' => $event->startAt->format('Y-m-d H:i:s'),
-                    'artist' => [
-                        'data' => [
-                            'id' => $event->artist->id,
-                            'type' => 'artist',
-                            'attributes' => [
-                                'name' => $event->artist->name,
-                                'description' => $event->artist->description,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
+        return new EmptyResponse();
     }
 
     /** @throws FailedValidation */
-    private function buildEventFromRequest(ServerRequestInterface $request): Event
+    public function buildEventFromRequest(ServerRequestInterface $request): Event
     {
         $errors = new MessageBag();
 
@@ -120,7 +112,7 @@ class CreateUpcomingEventsHandler implements RequestHandlerInterface
         }
 
         return new Event(
-            id: null,
+            id: (int) $request->getAttribute('eventId'),
             artist: $artist,
             startAt: $startAt
         );

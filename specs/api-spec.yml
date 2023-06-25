@@ -253,6 +253,22 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         422:
           $ref: '#/components/responses/BadRequest'
+    put:
+      summary: Update event
+      tags:
+        - Events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        204:
+          $ref: '#/components/responses/Empty'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        400:
+          $ref: '#/components/responses/BadRequest'
 components:
   schemas:
     User:
