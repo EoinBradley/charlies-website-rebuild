@@ -2,6 +2,7 @@
     import {onMounted, ref} from "vue";
     import {format, parseISO} from "date-fns";
     import {useToast} from "vue-toast-notification";
+    import axios from "axios";
 
     let props = defineProps(['event']);
 
@@ -10,6 +11,8 @@
     let dateError = ref(null);
     let time = ref(null);
     let timeError = ref(null);
+
+    const emit = defineEmits(['eventCancelled']);
 
     onMounted(() => {
         date.value = parseISO(props.event.data.attributes.start_at);
@@ -63,6 +66,22 @@
         }
     }
 
+    function cancelEvent() {
+        axios.delete(`/api/events/${props.event.data.id}`)
+            .then(() => {
+                useToast().success('Successfully updated', {
+                    position: 'top-right',
+                    duration: 4000
+                });
+
+                dropdownIsOpen.value = false;
+                emit('eventCancelled', props.event);
+            })
+            .catch(error => {
+                console.error('Unable to cancel event');
+            })
+    }
+
     function blurDateInput() {
         document.activeElement.blur();
     }
@@ -104,6 +123,7 @@
                     <div v-if="timeError" class="text-red-600 font-bold px-4 pt-2">{{ timeError }}</div>
                 </div>
                 <div class="flex py-3">
+                    <button @click="cancelEvent" class="mx-auto px-8 py-2 rounded text-red-600 hover:text-red-700">Cancel</button>
                     <button @click="updateEvent" class="mx-auto bg-red-600 hover:bg-red-700 px-8 py-2 rounded text-white">Update</button>
                 </div>
             </div>

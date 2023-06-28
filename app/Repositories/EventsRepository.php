@@ -100,4 +100,19 @@ class EventsRepository
 
         return $event;
     }
+
+    public function deleteEvent(Event $event, User $user): void
+    {
+        $stmt = $this->db->prepare("
+            UPDATE events
+            SET deleted_at = NOW(),
+                actor_id = :actorId
+            WHERE id = :id
+        ");
+
+        $stmt->execute([
+            'id' => $event->id,
+            'actorId' => $user->id
+        ]);
+    }
 }

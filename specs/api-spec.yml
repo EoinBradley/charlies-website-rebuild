@@ -214,6 +214,8 @@ paths:
           $ref: '#/components/responses/Empty'
         401:
           $ref: '#/components/responses/Unauthenticated'
+        404:
+          $ref: '#/components/responses/Empty'
         422:
           $ref: '#/components/responses/BadRequest'
   /api/upcoming-events:
@@ -253,6 +255,7 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         422:
           $ref: '#/components/responses/BadRequest'
+  /api/events/{eventId}:
     put:
       summary: Update event
       tags:
@@ -269,6 +272,19 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         400:
           $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/Empty'
+    delete:
+      summary: Cancel event
+      tags:
+        - Events
+      responses:
+        204:
+          $ref: '#/components/responses/Empty'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        404:
+          $ref: '#/components/responses/Empty'
 components:
   schemas:
     User:

@@ -32,6 +32,10 @@
             ...events.value
         ];
     }
+
+    function removeEvent(event) {
+        events.value = events.value.filter(e => e.data.id !== event.data.id);
+    }
 </script>
 
 <template>
@@ -42,7 +46,7 @@
         </div>
         <div v-else class="w-full py-4">
             <CreateEvent class="w-full" :artists="artists" @event-created="addEvent" />
-            <EventRow v-for="(event, key) in events" :key="event.data.id" :event="event" class="w-full" />
+            <EventRow v-for="(event, key) in events" :key="event.data.id" :event="event" class="w-full" @event-cancelled="removeEvent" />
         </div>
     </div>
 </template>

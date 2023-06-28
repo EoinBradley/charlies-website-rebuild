@@ -3,6 +3,7 @@
 use App\Http\Handlers\AppHandler;
 use App\Http\Handlers\Events\CreateArtistHandler;
 use App\Http\Handlers\Events\CreateUpcomingEventsHandler;
+use App\Http\Handlers\Events\DeleteEventHandler;
 use App\Http\Handlers\Events\ListArtistsHandler;
 use App\Http\Handlers\Events\ListUpcomingEventsHandler;
 use App\Http\Handlers\Events\UpdateArtistHandler;
@@ -93,6 +94,11 @@ return function (Container $container, ServerRequestInterface &$request): array 
             $r->addRoute('PUT', '/events/{eventId:\d+}[/]', [
                 RequiresAuthenticationMiddleware::class,
                 UpdateEventHandler::class
+            ]);
+
+            $r->addRoute('DELETE', '/events/{eventId:\d+}[/]', [
+                RequiresAuthenticationMiddleware::class,
+                DeleteEventHandler::class
             ]);
         });
     });

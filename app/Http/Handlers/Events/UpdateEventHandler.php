@@ -78,7 +78,7 @@ class UpdateEventHandler implements RequestHandlerInterface
             ]);
 
             return new JsonResponse([
-                'error' => 'Failed to update artist'
+                'error' => 'Failed to update event'
             ], 500);
         }
 
