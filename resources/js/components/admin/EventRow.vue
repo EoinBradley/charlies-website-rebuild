@@ -74,8 +74,8 @@
             <div class="grow">
                 <input v-if="dropdownIsOpen" type="text" :value="event.data.attributes.artist.data.attributes.name" class="rounded-md border border-gray-500 px-4 h-8 focus:outline-none w-full text-black cursor-not-allowed" disabled>
                 <div v-else>
-                    <span class="text-lg">{{ event.data.attributes.artist.data.attributes.name }}</span><br />
-                    <small class="text-slate-600">{{ format(parseISO(event.data.attributes.start_at), 'EEEE do LLLL, h:mm aaa') }}</small>
+                    <span class="text-2xl font-bold">{{ event.data.attributes.artist.data.attributes.name }}</span><br />
+                    <span class="text-lg text-slate-600">{{ format(parseISO(event.data.attributes.start_at), 'EEEE do LLLL, h:mm aaa') }}</span>
                 </div>
             </div>
             <div>

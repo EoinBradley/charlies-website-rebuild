@@ -23,7 +23,7 @@
             .then(({data}) => {
                 events.value = data.data;
                 loadingEvents.value = false;
-            })
+            });
     });
 
     function addEvent(event) {

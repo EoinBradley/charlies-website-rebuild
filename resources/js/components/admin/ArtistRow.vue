@@ -46,7 +46,7 @@
         <div class="flex">
             <div class="grow">
                 <input v-if="dropdownIsOpen" type="text" v-model="artistName" placeholder="Name" class="rounded-md border border-gray-500 px-4 h-8 focus:outline-none w-full text-black" />
-                <span v-else>{{ artist.data.attributes.name }}</span>
+                <span v-else class="text-2xl font-bold">{{ artist.data.attributes.name }}</span>
             </div>
             <div>
                 <button v-if="dropdownIsOpen" @click="dropdownIsOpen = !dropdownIsOpen" class="bg-blue-700 hover:bg-blue-800 ml-2 px-4 py-1 rounded text-white">Close</button>

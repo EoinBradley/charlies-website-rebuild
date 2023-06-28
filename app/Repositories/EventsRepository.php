@@ -27,6 +27,7 @@ class EventsRepository
                     AND artists.deleted_at IS NULL
             WHERE DATE(events.start_at) >= CURDATE()
                 AND events.deleted_at IS NULL
+            ORDER BY events.start_at
         ");
 
         return collect($stmt->fetchAll(PDO::FETCH_OBJ))->map(function (object $data) {
